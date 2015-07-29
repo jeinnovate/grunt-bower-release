@@ -80,6 +80,7 @@ module.exports = function(grunt) {
       if (!bowerJSON && grunt.file.isFile(configFile)) {
         bowerJSON = grunt.file.readJSON(configFile)
         bowerFile = configFile
+        bowerJSON.version = (options.suffixTagWithTimestamp) ? bowerJSON.version + '+' + new Date().getTime() : bowerJSON.version;
       }
     })
 
@@ -300,7 +301,7 @@ module.exports = function(grunt) {
       function tag() {
         /* Tag name must be valid semver -- but I'm not validating this here. */
         /* TODO: Validate this here! */
-        var tag = (options.suffixTagWithTimestamp) ? bowerJSON.version + '+' + new Date().getTime() : bowerJSON.version;
+        var tag = bowerJSON.version;
         endpoint.tag(tag, makeTagMsg(options.packageName), function() { tagged(tag) });
       }
 
